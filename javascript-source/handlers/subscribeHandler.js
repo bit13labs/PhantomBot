@@ -83,6 +83,8 @@
      */
     $.bind('twitchSubscriber', function(event) {
         var subscriber = event.getSubscriber(),
+            tier = event.getPlan(),
+            plan = getPlanName(tier),
             message = subMessage;
 
         if (subWelcomeToggle === true && announce === true) {
@@ -95,10 +97,10 @@
             }
 
             if (message.match(/\(plan\)/g)) {
-                message = $.replace(message, '(plan)', getPlanName(event.getPlan()));
+                message = $.replace(message, '(plan)', plan);
             }
             $.say(message);
-            $.addSubUsersList(subscriber);
+            $.addSubUsersList(subscriber, tier);
             $.restoreSubscriberStatus(subscriber, true);
             $.writeToFile(subscriber + ' ', './addons/subscribeHandler/latestSub.txt', false);
             $.inidb.set('streamInfo', 'lastSub', subscriber);
@@ -123,7 +125,7 @@
                 message = $.replace(message, '(reward)', String(subReward));
             }
             $.say(message);
-            $.addSubUsersList(subscriber);
+            $.addSubUsersList(subscriber, 'Prime');
             $.restoreSubscriberStatus(subscriber, true);
             $.writeToFile(subscriber + ' ', './addons/subscribeHandler/latestSub.txt', false);
             $.inidb.set('streamInfo', 'lastSub', subscriber);
@@ -140,6 +142,8 @@
         var resubscriber = event.getReSubscriber(),
             months = event.getMonths(),
             message = reSubMessage,
+            tier = event.getPlan(),
+            plan = getPlanName(event.getPlan()),
             emotes = [];
 
         if (reSubWelcomeToggle === true && announce === true) {
@@ -156,7 +160,7 @@
             }
 
             if (message.match(/\(plan\)/g)) {
-                message = $.replace(message, '(plan)', getPlanName(event.getPlan()));
+                message = $.replace(message, '(plan)', plan);
             }
 
             if (message.match(/\(customemote\)/)) {
@@ -164,7 +168,7 @@
                 message = $.replace(message, '(customemote)', emotes.join(' '));
             }
             $.say(message);
-            $.addSubUsersList(resubscriber);
+            $.addSubUsersList(resubscriber, tier);
             $.restoreSubscriberStatus(resubscriber, true);
             $.writeToFile(resubscriber + ' ', './addons/subscribeHandler/latestResub.txt', false);
             $.writeToFile(resubscriber + ': ' + months + ' ', './addons/subscribeHandler/latestResub&Months.txt', false);
@@ -183,6 +187,7 @@
             recipient = event.getRecipient(),
             months = event.getMonths(),
             tier = event.getPlan(),
+            plan = getPlanName(tier),
             message = giftSubMessage;
 
         if (giftSubWelcomeToggle === true && announce === true) {
@@ -203,7 +208,7 @@
             }
 
             if (message.match(/\(plan\)/g)) {
-                message = $.replace(message, '(plan)', getPlanName(event.getPlan()));
+                message = $.replace(message, '(plan)', plan);
             }
 
             if (message.match(/\(customemote\)/)) {
@@ -211,7 +216,7 @@
                 message = $.replace(message, '(customemote)', emotes.join(' '));
             }
             $.say(message);
-            $.addSubUsersList(recipient);
+            $.addSubUsersList(recipient, tier);
             $.restoreSubscriberStatus(recipient, true);
             $.writeToFile(recipient + ' ', './addons/subscribeHandler/latestSub.txt', false);
             $.inidb.set('streamInfo', 'lastSub', recipient);

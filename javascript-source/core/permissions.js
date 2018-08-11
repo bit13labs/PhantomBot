@@ -171,6 +171,24 @@
         return hasKey(subUsers, username, 0) || isGWSub(username.toLowerCase());
     }
 
+    function isSubTier2(username) {
+        if(hasKey(subUsers, username, 0)) {
+            var tier = subUsers[username][2];
+            return tier === "2000";
+        } else {
+            return false;
+        }
+    }
+
+    function isSubTier3(username) {
+        if(hasKey(subUsers, username, 0)) {
+            var tier = subUsers[username][2];
+            return tier === "3000";
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @function isGWSub
      * @param {String}
@@ -413,14 +431,15 @@
      * @export $
      * @param username
      */
-    function addSubUsersList(username) {
+    function addSubUsersList(username, tier) {
+        tier = tier || "1000";
         username = (username + '').toLowerCase();
         for (i in subUsers) {
             if (subUsers[i][0].equalsIgnoreCase(username)) {
                 return;
             }
         }
-        subUsers.push([username, $.systemTime() + 1e4]);
+        subUsers.push([username, $.systemTime() + 1e4, tier]);
     }
 
     /**
@@ -434,7 +453,7 @@
         username = (username + '').toLowerCase();
         for (i in subUsers) {
             if (!subUsers[i][0].equalsIgnoreCase(username)) {
-                newSubUsers.push([subUsers[i][0], subUsers[i][1]]);
+                newSubUsers.push([subUsers[i][0], subUsers[i][1], , subUsers[i][2]]);
             }
         }
         subUsers = newSubUsers;
@@ -1011,6 +1030,8 @@
     $.isModeratorCache = isModeratorCache;
     $.isOwner = isOwner;
     $.isSub = isSub;
+    $.isSubTier2 = isSubTier2;
+    $.isSubTier3 = isSubTier3;
     $.isSubv3 = isSubv3;
     $.isTurbo = isTurbo;
     $.isDonator = isDonator;

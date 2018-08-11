@@ -178,10 +178,24 @@
             username = $.users[i][0].toLowerCase();
             if ($.isOnline($.channelName)) {
                 if ($.isMod(username) && $.isSub(username) || $.isAdmin(username) && $.isSub(username)) {
-                    if (parseInt($.inidb.get('grouppoints', 'Subscriber')) > 0) {
-                        amount = parseInt($.inidb.get('grouppoints', 'Subscriber'));
+                    if($.isSubTier3(username)) {
+                        if (parseInt($.inidb.get('grouppoints', 'Subscriber2')) > 0) {
+                            amount = parseInt($.inidb.get('grouppoints', 'Subscriber2'));
+                        } else {
+                            amount = onlineGain;
+                        }
+                    } else if ($.isSubTier2(username)) {
+                        if (parseInt($.inidb.get('grouppoints', 'Subscriber3')) > 0) {
+                            amount = parseInt($.inidb.get('grouppoints', 'Subscriber3'));
+                        } else {
+                            amount = onlineGain;
+                        }
                     } else {
-                        amount = onlineGain;
+                        if (parseInt($.inidb.get('grouppoints', 'Subscriber')) > 0) {
+                            amount = parseInt($.inidb.get('grouppoints', 'Subscriber'));
+                        } else {
+                            amount = onlineGain;
+                        }
                     }
                 } else {
                     if ($.inidb.exists('grouppoints', $.getUserGroupName(username))) {
